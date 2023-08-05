@@ -3,7 +3,7 @@ import os
 
 from fastapi import FastAPI
 from app.api.contacts import router as contact_router
-from app.database import engine, SessionLocal, ContactModel, create_tables
+from app.database import SessionLocal, ContactModel, create_tables
 import csv
 from dotenv import load_dotenv
 
@@ -21,7 +21,6 @@ NIMBLE_API_KEY = os.getenv("NIMBLE_API_KEY")
 @app.on_event("startup")
 def startup():
     create_tables()
-    print("NIMBLE_API_KEY = ", NIMBLE_API_KEY)
     # fetch_nimble_contacts.delay(NIMBLE_API_KEY)
     update_database_from_nimble(NIMBLE_API_KEY)
 
@@ -54,6 +53,8 @@ def insert_contacts_to_db():
     finally:
         db.close()
 
+# Celery configuration
+app.config_from_object("app.tasks.celery_config")
 
 # insert_contacts_to_db()
 

@@ -1,4 +1,4 @@
-# contacts/app/services/nimble_service.py
+# start file contacts/app/services/nimble_service.py
 
 import requests
 
@@ -12,3 +12,5 @@ class NimbleService:
         if response.status_code == 200:
             return response.json().get("resources", [])
         return []
+
+# end file contacts/app/services/nimble_service.py

@@ -7,7 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 load_dotenv()
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgrespassword@localhost:5432/contacts_db")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -24,21 +24,5 @@ class ContactModel(Base):
 
 def create_tables():
     Base.metadata.create_all(bind=engine)
-
-def insert_contact_to_db(first_name: str, last_name: str, email: str):
-    contact = ContactModel(first_name=first_name, last_name=last_name, email=email)
-    session = SessionLocal()
-    try:
-        session.add(contact)
-        session.commit()
-        session.refresh(contact)
-    except Exception as e:
-        session.rollback()
-        raise e
-    finally:
-        session.close()
-
-
-Base.metadata.create_all(bind=engine) # Создаем таблицы в базе данных
 
 # end of file contacts/app/database.py

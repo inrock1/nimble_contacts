@@ -19,3 +19,5 @@ class ContactAPI:
             if query.lower() in contact["fields"]["company name"][0]["value"].lower()
         ]
         return filtered_contacts
+
+# end of file contacts/app/api/contacts.py

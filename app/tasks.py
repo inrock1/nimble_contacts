@@ -1,4 +1,4 @@
-# contacts/app/tasks.py
+# start of file contacts/app/tasks.py
 import os
 
 import requests
@@ -11,3 +11,5 @@ app = Celery('tasks', broker='redis://localhost:6379/0')
 @app.task
 def fetch_nimble_contacts(api_key: str):
     update_database_from_nimble(api_key)
+
+# end of file contacts/app/tasks.py
