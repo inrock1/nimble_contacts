@@ -3,6 +3,8 @@ from app.database import SessionLocal, ContactModel, create_tables
 
 
 create_tables()
+
+
 def read_csv_file(filename):
     with open(filename, newline="", encoding="utf-8") as csvfile:
         csv_reader = csv.DictReader(csvfile)
@@ -18,7 +20,7 @@ def insert_contacts_to_db():
                 id=row["Email"],
                 first_name=row["first name"],
                 last_name=row["last name"],
-                email=row["Email"]
+                email=row["Email"],
             )
             db.add(contact)
         db.commit()
@@ -27,5 +29,6 @@ def insert_contacts_to_db():
         raise e
     finally:
         db.close()
+
 
 # insert_contacts_to_db()
