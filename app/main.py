@@ -4,7 +4,6 @@ from fastapi import FastAPI
 from app.api.contacts import router as contact_router
 from app.celery_tasks.tasks import fetch_nimble_contacts
 
-
 app = FastAPI()
 app.include_router(contact_router, prefix="/api")
 

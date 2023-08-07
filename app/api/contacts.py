@@ -9,7 +9,9 @@ router = APIRouter()
 
 
 @router.get("/search/", response_model=list[Contact])
-def search_contacts(query: str = Query(..., min_length=1), db: Session = Depends(get_db)):
+def search_contacts(
+    query: str = Query(..., min_length=1), db: Session = Depends(get_db)
+):
     search_query = f"%{query}%"
     contacts = (
         db.query(ContactModel)

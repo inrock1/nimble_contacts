@@ -1,4 +1,4 @@
-# start file contacts/app/helpers.py
+# start file contacts/app/services/contact_service.py
 from app.database import ContactModel, SessionLocal
 from app.models.contact import Contact
 from app.services.nimble_service import NimbleService
@@ -55,4 +55,4 @@ def update_database_from_nimble(api_key: str):
         print("checking updates completed")
 
 
-# end file contacts/app/helpers.py
+# end file contacts/app/services/contact_service.py

@@ -1,9 +1,6 @@
 import csv
 
-from app.database import ContactModel, SessionLocal, create_tables
-
-create_tables()
-
+from app.database import ContactModel, get_db, create_tables
 
 def read_csv_file(filename):
     with open(filename, newline="", encoding="utf-8") as csvfile:
@@ -11,9 +8,7 @@ def read_csv_file(filename):
         for row in csv_reader:
             yield row
 
-
-def insert_contacts_to_db():
-    db = SessionLocal()
+def insert_contacts_to_db(db):
     try:
         for row in read_csv_file("Nimble_Contacts.csv"):
             contact = ContactModel(
@@ -27,8 +22,14 @@ def insert_contacts_to_db():
     except Exception as e:
         db.rollback()
         raise e
+
+def main():
+    create_tables()
+    db = get_db()
+    try:
+        insert_contacts_to_db(db)
     finally:
         db.close()
 
-
-# insert_contacts_to_db()
+if __name__ == "__main__":
+    main()

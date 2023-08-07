@@ -1,6 +1,6 @@
 # contacts/app/services/nimble_service.py
-
 import requests
+
 
 class NimbleService:
     def __init__(self, api_key: str, requests_session: requests.Session = None):
@@ -15,5 +15,6 @@ class NimbleService:
         if response.status_code == 200:
             return response.json().get("resources", [])
         response.raise_for_status()
+
 
 # end file contacts/app/services/nimble_service.py
