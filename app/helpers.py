@@ -17,9 +17,7 @@ def update_database_from_nimble(api_key: str):
             first_name = contact_data["fields"].get("first name", [{}])[0].get("value")
             last_name = contact_data["fields"].get("last name", [{}])[0].get("value")
             email = contact_data["fields"].get("email", [{}])[0].get("value")
-            # print(
-            #     "first_name: ", first_name, "last_name: ", last_name, "email: ", email
-            # )
+
             if first_name and last_name:
                 nimble_contact = Contact(
                     id=contact_data["id"],

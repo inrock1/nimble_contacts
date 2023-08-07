@@ -1,19 +1,24 @@
 # start file contacts/app/database.py
-import os
-
-from dotenv import load_dotenv
-from sqlalchemy import create_engine, Column, String, MetaData
+from sqlalchemy import Column, MetaData, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-load_dotenv()
-DATABASE_URL = os.getenv("DATABASE_URL")
+from app.config import DATABASE_URL
+
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 metadata = MetaData()
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 class ContactModel(Base):
@@ -26,5 +31,6 @@ class ContactModel(Base):
 
 def create_tables():
     Base.metadata.create_all(bind=engine)
+
 
 # end of file contacts/app/database.py

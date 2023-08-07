@@ -1,6 +1,6 @@
 import csv
-from app.database import SessionLocal, ContactModel, create_tables
 
+from app.database import ContactModel, SessionLocal, create_tables
 
 create_tables()
 

@@ -1,14 +1,13 @@
 # contacts/app/tasks/tasks.py
-import os
 from celery import Celery
-from dotenv import load_dotenv
 
+from app.config import NIMBLE_API_KEY
 from app.helpers import update_database_from_nimble
 
-load_dotenv()
-NIMBLE_API_KEY = os.getenv("NIMBLE_API_KEY")
 
-celery_app = Celery("tasks", backend="redis://localhost:6379/1", broker="redis://localhost:6379/0")
+celery_app = Celery(
+    "tasks", backend="redis://localhost:6379/1", broker="redis://localhost:6379/0"
+)
 
 
 # Celery beat scheduler configuration
@@ -18,6 +17,7 @@ celery_app.conf.beat_schedule = {
         "schedule": 86400,  # seconds
     },
 }
+
 
 @celery_app.task
 def fetch_nimble_contacts():

@@ -10,4 +10,5 @@ class Contact(BaseModel):
     last_name: str
     email: Optional[str] = None
 
+
 #  end file contacts/app/models/contact.py
