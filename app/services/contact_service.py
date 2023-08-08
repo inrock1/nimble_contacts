@@ -1,6 +1,6 @@
 # start file contacts/app/services/contact_service.py
-from app.database import ContactModel, SessionLocal
-from app.models.contact import Contact
+from app.dal.contact_dal import ContactDAL
+from app.serializers.contactserializer import ContactSerializer
 from app.services.nimble_service import NimbleService
 
 
@@ -12,47 +12,39 @@ def update_database_from_nimble(api_key: str):
         contact for contact in nimble_contacts if contact.get("record_type") == "person"
     ]
 
-    with SessionLocal() as db:
-        for contact_data in person_contacts:
-            first_name = contact_data["fields"].get("first name", [{}])[0].get("value")
-            last_name = contact_data["fields"].get("last name", [{}])[0].get("value")
-            email = contact_data["fields"].get("email", [{}])[0].get("value")
+    contact_dal = ContactDAL()
 
-            if first_name and last_name:
-                nimble_contact = Contact(
-                    id=contact_data["id"],
-                    first_name=first_name,
-                    last_name=last_name,
-                    email=email,
-                )
+    for contact_data in person_contacts:
+        first_name = contact_data["fields"].get("first name", [{}])[0].get("value")
+        last_name = contact_data["fields"].get("last name", [{}])[0].get("value")
+        email = contact_data["fields"].get("email", [{}])[0].get("value")
 
-                existing_contact = (
-                    db.query(ContactModel).filter_by(id=nimble_contact.id).first()
-                )
+        if first_name and last_name:
+            contact = contact_dal.create_contact(
+                id=contact_data["id"],
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+            )
 
-                if existing_contact:
-                    # Check for differences before updating
-                    if (
-                        existing_contact.first_name != nimble_contact.first_name
-                        or existing_contact.last_name != nimble_contact.last_name
-                        or existing_contact.email != nimble_contact.email
-                    ):
-                        # Update the existing_contact
-                        existing_contact.first_name = nimble_contact.first_name
-                        existing_contact.last_name = nimble_contact.last_name
-                        existing_contact.email = nimble_contact.email
-                        db.commit()
-                else:
-                    # Contact does not exist, perform insertion
-                    contact_model = ContactModel(
-                        id=nimble_contact.id,
-                        first_name=nimble_contact.first_name,
-                        last_name=nimble_contact.last_name,
-                        email=nimble_contact.email,
+            existing_contact = contact_dal.get_contact_by_id(contact_data["id"])
+
+            if existing_contact:
+                # Check for differences before updating
+                if (
+                    existing_contact.first_name != contact.first_name
+                    or existing_contact.last_name != contact.last_name
+                    or existing_contact.email != contact.email
+                ):
+                    # Update the existing_contact
+                    contact_dal.update_contact(
+                        contact,
+                        first_name=contact.first_name,
+                        last_name=contact.last_name,
+                        email=contact.email,
                     )
-                    db.add(contact_model)
-                    db.commit()
-        print("checking updates completed")
 
+    contact_dal.close()
+    print("checking updates completed")
 
 # end file contacts/app/services/contact_service.py
