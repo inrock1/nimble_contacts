@@ -2,13 +2,15 @@
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
-from ..database import ContactModel, get_db
-from ..serializers.contactserializer import ContactSerializer
+from app.core.database import get_db
+
+from ..models.contacts import ContactModel
+from ..serializers.contact_serializer import ContactSchema
 
 router = APIRouter()
 
 
-@router.get("/search/", response_model=list[ContactSerializer])
+@router.get("/search/", response_model=list[ContactSchema])
 def search_contacts(
     query: str = Query(..., min_length=1), db: Session = Depends(get_db)
 ):
