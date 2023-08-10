@@ -1,6 +1,6 @@
 # start file contacts/app/core/database.py
-from sqlalchemy import MetaData, create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import sessionmaker
 
 from app.config import DATABASE_URL
@@ -8,8 +8,8 @@ from app.config import DATABASE_URL
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
-metadata = MetaData()
+class Base(DeclarativeBase):
+    pass
 
 
 def get_db():
@@ -18,10 +18,5 @@ def get_db():
         yield db
     finally:
         db.close()
-
-
-# def create_tables():
-#     Base.metadata.create_all(bind=engine)
-
 
 # end of file contacts/app/core/database.py

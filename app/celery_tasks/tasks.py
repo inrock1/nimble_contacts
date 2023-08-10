@@ -11,7 +11,6 @@ celery_app = Celery(
     "tasks", backend="redis://localhost:6379/1", broker="redis://localhost:6379/0"
 )
 
-# Celery beat scheduler configuration
 celery_app.conf.beat_schedule = {
     "run-fetch-nimble": {
         "task": "app.celery_tasks.tasks.fetch_nimble_contacts",
