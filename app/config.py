@@ -16,5 +16,12 @@ def get_url():
 
 DATABASE_URL = get_url()
 
-TEST_DATABASE_URL = "sqlite:///./test.db"
 
+def get_test_url():
+    user = os.getenv("TEST_POSTGRES_USER", "postgres")
+    password = os.getenv("TEST_POSTGRES_PASSWORD", "")
+    server = os.getenv("TEST_POSTGRES_SERVER", "db")
+    db = os.getenv("TEST_POSTGRES_DB", "app")
+    return f"postgresql://{user}:{password}@{server}/{db}"
+
+TEST_DATABASE_URL = get_test_url()

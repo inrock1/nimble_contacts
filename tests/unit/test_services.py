@@ -1,10 +1,10 @@
 from app.services.nimble_service import NimbleService
-from tests.conftest import MOCK_RESPONCE
+from tests.conftest import MOCK_RESPONSE
 
 
 def test_get_nimble_contacts(mock_requests):
 
-    mock_requests.get("https://api.nimble.com/api/v1/contacts", json=MOCK_RESPONCE)
+    mock_requests.get("https://api.nimble.com/api/v1/contacts", json=MOCK_RESPONSE)
 
     nimble_service = NimbleService(api_key="")
     contacts = nimble_service.get_contacts()
