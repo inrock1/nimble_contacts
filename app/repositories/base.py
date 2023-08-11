@@ -39,9 +39,6 @@ class BaseRepository:
             self.db.query(self.model).filter(self.model.id_nimble == id_nimble).first()
         )
 
-    def close(self):
-        self.db.close()
-
     def search_contacts(self, query: str) -> List[ContactModel]:
         search_query = f"%{query}%"
         contacts = (
@@ -54,5 +51,9 @@ class BaseRepository:
             .all()
         )
         return contacts
+
+    def close(self):
+        self.db.close()
+
 
 # end of file app/repositories/base.py

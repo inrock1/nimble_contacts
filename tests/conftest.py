@@ -2,7 +2,10 @@
 import pytest
 import requests_mock
 from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql import text
+
 from app.config import TEST_DATABASE_URL
 from app.models.contacts import Base
 
@@ -19,6 +22,11 @@ def test_db():
         yield db
     finally:
         db.close()
+
+def clear_contacts_table(db: Session):
+    delete_query = text("DELETE FROM contacts")
+    db.execute(delete_query)
+    db.commit()
 
 
 @pytest.fixture
