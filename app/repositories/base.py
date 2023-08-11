@@ -1,8 +1,9 @@
 # file app/repositories/base.py
-from typing import Any
+from typing import Any, List
 
 from sqlalchemy.orm import Session
 
+from app.models.contacts import ContactModel
 from app.serializers.contact_serializer import ContactSchema
 
 
@@ -37,6 +38,19 @@ class BaseRepository:
         return (
             self.db.query(self.model).filter(self.model.id_nimble == id_nimble).first()
         )
+
+    def search_contacts(self, query: str) -> List[ContactModel]:
+        search_query = f"%{query}%"
+        contacts = (
+            self.db.query(ContactModel)
+            .filter(
+                (ContactModel.first_name.ilike(search_query))
+                | (ContactModel.last_name.ilike(search_query))
+                | (ContactModel.email.ilike(search_query))
+            )
+            .all()
+        )
+        return contacts
 
     def close(self):
         self.db.close()
