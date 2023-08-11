@@ -1,11 +1,11 @@
 # start file contacts/app/services/contact_service.py
 from app.config import NIMBLE_API_KEY
-from app.repositories.contact_repository import ContactRepository
+from app.repositories.contact_repository import PersonRepository
 from app.services.nimble_service import NimbleService
 
 
 class ContactService:
-    def __init__(self, contact_repo: ContactRepository):
+    def __init__(self, contact_repo: PersonRepository):
         self.repo = contact_repo
 
     def check(self):
@@ -16,7 +16,7 @@ class ContactService:
             db_contact = self.repo.get_contact_by_id(nimble_contact.id_nimble)
 
             if not db_contact:
-                self.repo.create_contact(nimble_contact)
+                self.repo.create_contact(nimble_contact.dict())
             else:
                 # Check for differences before updating
                 if (
@@ -25,7 +25,7 @@ class ContactService:
                     or db_contact.email != nimble_contact.email
                 ):
                     # Update the contact
-                    self.repo.update_contact(nimble_contact)
+                    self.repo.update_contact(nimble_contact.dict())
 
         self.repo.close()
         print("checking updates completed")

@@ -21,6 +21,7 @@ def test_db():
     try:
         yield db
     finally:
+        clear_contacts_table(db)
         db.close()
 
 def clear_contacts_table(db: Session):

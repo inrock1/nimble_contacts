@@ -1,5 +1,5 @@
 # file app/repositories/base.py
-from typing import Any, List
+from typing import Any, List, Dict
 
 from sqlalchemy.orm import Session
 
@@ -13,23 +13,18 @@ class BaseRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create_contact(self, nimble_contact: ContactSchema):
-        contact = self.model(
-            id_nimble=nimble_contact.id_nimble,
-            first_name=nimble_contact.first_name,
-            last_name=nimble_contact.last_name,
-            email=nimble_contact.email,
-        )
+    def create_contact(self, data: Dict[str, Any]):
+        contact = self.model(**data)
         self.db.add(contact)
         self.db.commit()
         return contact
 
-    def update_contact(self, nimble_contact: ContactSchema):
-        contact = self.get_contact_by_id(nimble_contact.id_nimble)
+
+    def update_contact(self, data: dict):
+        contact = self.get_contact_by_id(data['id_nimble'])
         if contact:
-            contact.first_name = nimble_contact.first_name
-            contact.last_name = nimble_contact.last_name
-            contact.email = nimble_contact.email
+            for key, value in data.items():
+                setattr(contact, key, value)
             self.db.commit()
             return contact
         return None
