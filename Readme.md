@@ -18,7 +18,33 @@ A service with a contact database that is populated from a CSV file and an exter
 - Requests   
 - Pytest   
 
-### How to Run:
+### How to Run with docker:
+```python
+# Rename .env.sample to .env and put your credentials 
+# (you can write only NIMBLE_API_KEY).
+docker-compose build 
+docker-compose up
+```
+### How to run tests with docker:
+```python
+# create test user and DB
+docker exec -it <CONTAINER_DB_ID_OR_NAME> bash
+psql -U postgres
+create database test_db;
+CREATE USER test_user WITH PASSWORD 'test_password';
+ALTER DATABASE test_db OWNER TO test_user;
+GRANT ALL PRIVILEGES ON DATABASE test_db TO test_user;
+\q
+exit
+
+# run tests
+docker exec -it <CONTAINER_APP_ID_OR_NAME> bash
+alembic -x alembic_test.ini upgrade head
+pytest tests
+```
+
+
+### How to Run without docker:
 
 Install the required dependencies mentioned in the requirements.txt file.   
 Rename .env.sample to .env and put your credentials (you can write only NIMBLE_API_KEY).   
@@ -31,7 +57,9 @@ celery -A app.celery_tasks.tasks worker --loglevel=info -E
 # start celery beat:   
 celery -A app.celery_tasks.tasks beat --loglevel=info
 
-
+# * if you run it in windows, please change in requirements.txt 
+# psycopg2-binary to psycopg2
+# psycopg-binary to psycopg
 ```
 Start the FastApi service 
 ```python
