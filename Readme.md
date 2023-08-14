@@ -27,7 +27,7 @@ docker-compose up
 ```
 ### How to run tests with docker:
 ```python
-# create test user and DB
+# create test user and test DB
 docker exec -it <CONTAINER_DB_ID_OR_NAME> bash
 psql -U postgres
 create database test_db;
@@ -47,6 +47,9 @@ pytest tests
 ### How to Run without docker:
 
 Install the required dependencies mentioned in the requirements.txt file.   
+/* if you run it in windows, please change in requirements.txt  
+psycopg2-binary to psycopg2   
+psycopg-binary to psycopg   
 Rename .env.sample to .env and put your credentials (you can write only NIMBLE_API_KEY).   
 Set up your PostgreSQL database and configure the connection.
 ```python
@@ -57,9 +60,7 @@ celery -A app.celery_tasks.tasks worker --loglevel=info -E
 # start celery beat:   
 celery -A app.celery_tasks.tasks beat --loglevel=info
 
-# * if you run it in windows, please change in requirements.txt 
-# psycopg2-binary to psycopg2
-# psycopg-binary to psycopg
+
 ```
 Start the FastApi service 
 ```python
