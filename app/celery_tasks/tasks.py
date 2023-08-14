@@ -8,8 +8,9 @@ from app.repositories.contact_repository import PersonRepository
 from app.services.contact_service import ContactService
 
 celery_app = Celery(
-    "tasks", backend="redis://localhost:6379/1", broker="redis://localhost:6379/0"
+    "tasks", backend="redis://redis:6379/1", broker="redis://redis:6379/0"
 )
+
 
 celery_app.conf.beat_schedule = {
     "run-fetch-nimble": {

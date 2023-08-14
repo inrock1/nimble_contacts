@@ -1,16 +1,14 @@
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
 
 from app.repositories.contact_repository import PersonRepository
 from app.serializers.contact_serializer import ContactSchema
-from tests.conftest import test_db, clear_contacts_table
+from tests.conftest import clear_contacts_table, test_db
 
 NEW_CONTACT = ContactSchema(
-    id_nimble="some_id",
-    first_name="John",
-    last_name="Doe",
-    email="john@example.com"
+    id_nimble="some_id", first_name="John", last_name="Doe", email="john@example.com"
 )
+
 
 def test_create_contact(test_db: Session):
     contact_repo = PersonRepository(test_db)
@@ -29,7 +27,7 @@ def test_update_contact(test_db: Session):
         id_nimble="some_id",
         first_name="Updated John",
         last_name="Updated Doe",
-        email="updated_john@example.com"
+        email="updated_john@example.com",
     )
 
     updated_contact = contact_repo.update_contact(updated_contact.dict())
@@ -66,5 +64,3 @@ def test_nonexistent_contact(test_db: Session):
 
     retrieved_contact = contact_repo.get_contact_by_id("nonexistent_id")
     assert retrieved_contact is None
-
-

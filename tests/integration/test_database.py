@@ -1,8 +1,7 @@
 # file tests/integration/test_database.py
-from app.services.contact_service import ContactService
 from app.repositories.contact_repository import PersonRepository
-from tests.conftest import test_db, mock_requests
-from tests.conftest import MOCK_RESPONSE
+from app.services.contact_service import ContactService
+from tests.conftest import MOCK_RESPONSE, mock_requests, test_db
 
 
 def test_fetch_nimble_contacts_mocked_api(mock_requests, test_db):

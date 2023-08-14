@@ -1,5 +1,5 @@
 # file app/repositories/base.py
-from typing import Any, List, Dict
+from typing import Any, Dict, List
 
 from sqlalchemy.orm import Session
 
@@ -19,9 +19,8 @@ class BaseRepository:
         self.db.commit()
         return contact
 
-
     def update_contact(self, data: dict):
-        contact = self.get_contact_by_id(data['id_nimble'])
+        contact = self.get_contact_by_id(data["id_nimble"])
         if contact:
             for key, value in data.items():
                 setattr(contact, key, value)

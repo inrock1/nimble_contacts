@@ -2,13 +2,11 @@
 import pytest
 import requests_mock
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.sql import text
 
 from app.config import TEST_DATABASE_URL
 from app.models.contacts import Base
-
 
 test_engine = create_engine(TEST_DATABASE_URL, echo=True)
 SessionLocalTest = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
@@ -23,6 +21,7 @@ def test_db():
     finally:
         clear_contacts_table(db)
         db.close()
+
 
 def clear_contacts_table(db: Session):
     delete_query = text("DELETE FROM contacts")
@@ -44,8 +43,8 @@ MOCK_RESPONSE = {
             "fields": {
                 "first name": [{"value": "Jon1"}],
                 "last name": [{"value": "Ferrara"}],
-                "email": [{"value": "care@nimble.com"}]
-            }
+                "email": [{"value": "care@nimble.com"}],
+            },
         }
     ]
 }
